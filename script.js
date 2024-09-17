@@ -26,3 +26,26 @@ function downloadImage(event) {
 document.querySelectorAll('.image-item img').forEach(img => {
     img.addEventListener('click', downloadImage);
 });
+document.addEventListener("DOMContentLoaded", function() {
+  // Select all images with the class 'image-item' that need lazy loading
+  const images = document.querySelectorAll('.image-item img');
+
+  // Set up the IntersectionObserver
+  const lazyLoad = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        // Replace the src with the value from data-src
+        img.src = img.dataset.src;
+        // Stop observing the current image after loading
+        observer.unobserve(img);
+      }
+    });
+  });
+
+  // Observe each image
+  images.forEach(image => {
+    lazyLoad.observe(image);
+  });
+});
+
